@@ -4,7 +4,7 @@ interface InterfaceLogin {
 }
 
 interface InterfaceUser extends InterfaceLogin {
-  nguoi_dung_id: string;
+  nguoi_dung_id: number;
   ho_ten: string;
   tuoi: number;
   anh_dai_dien: string;

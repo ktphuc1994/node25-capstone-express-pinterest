@@ -5,7 +5,10 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 // import local config
-import responseCode from '../config/responses';
+import responseCode, { catchError } from '../config/responses';
+
+// import validator
+import validators from '../validators/validators';
 
 const imagesController = {
   // LẤY danh sách ảnh
@@ -39,15 +42,13 @@ const imagesController = {
   // LẤY danh sách ảnh theo ID
   getImagesById: async (req: Request, res: Response) => {
     try {
-      let { id } = req.params;
-
-      if (isNaN(Number(id))) {
-        responseCode.badRequest(res, { id }, 'id phải là số');
-        return;
-      }
+      const id = await validators.isNumber.validateAsync(
+        Number(req.params.id),
+        { messages: { 'number.base': 'hinh_id phải là dạng số' } }
+      );
 
       const imageInfo = await prisma.hinh_anh.findFirst({
-        where: { hinh_id: Number(id) },
+        where: { hinh_id: id },
         include: {
           nguoi_dung: {
             select: {
@@ -62,16 +63,12 @@ const imagesController = {
       });
 
       if (!imageInfo) {
-        responseCode.notFound(
-          res,
-          { id: Number(id) },
-          'Không tìm thấy hình ảnh'
-        );
+        responseCode.notFound(res, { id }, 'Không tìm thấy hình ảnh');
         return;
       }
       responseCode.success(res, imageInfo, 'Lấy thông tin ảnh thành công');
     } catch (err) {
-      responseCode.error(res, 'Lỗi Backend');
+      catchError(err, req, res);
     }
   },
 
@@ -94,6 +91,21 @@ const imagesController = {
       );
     } catch (err) {
       responseCode.error(res, 'Lỗi Backend');
+    }
+  },
+
+  // XÓA ảnh theo ID
+  deleteImage: async (req: Request, res: Response) => {
+    try {
+      const id = await validators.isNumber.validateAsync(
+        Number(req.params.id),
+        { messages: { 'number.base': 'hinh_id phải là dạng số' } }
+      );
+
+      const result = await prisma.hinh_anh.delete({ where: { hinh_id: id } });
+      responseCode.success(res, result, 'Xóa hình thành công');
+    } catch (err) {
+      catchError(err, req, res);
     }
   },
 };

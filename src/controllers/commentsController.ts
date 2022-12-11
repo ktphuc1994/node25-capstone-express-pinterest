@@ -14,8 +14,10 @@ const commentsController = {
   // LẤY danh sách bình luận theo ID ảnh
   getCommentsByImgId: async (req: Request, res: Response) => {
     try {
-      const params = req.params;
-      const id = Number(params.id);
+      const id = await validators.isNumber.validateAsync(
+        Number(req.params.id),
+        { messages: { 'number.base': 'hinh_id phải là dạng số' } }
+      );
 
       const commentsData = await prisma.binh_luan.findMany({
         where: { hinh_id: id },
@@ -27,7 +29,7 @@ const commentsController = {
         'Lấy thông tin bình luận thành công'
       );
     } catch (err) {
-      responseCode.error(res, 'Lỗi Backend');
+      catchError(err, req, res);
     }
   },
 
@@ -38,7 +40,6 @@ const commentsController = {
         abortEarly: true,
         convert: false,
       });
-
       const postComment = await prisma.binh_luan.create({ data: commentInfo });
       responseCode.created(res, postComment, 'Đăng bình luận thành công');
     } catch (err) {
