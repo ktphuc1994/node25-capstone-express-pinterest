@@ -51,6 +51,7 @@ model binh_luan {
   nguoi_dung_id  Int?
   hinh_id        Int
   ngay_binh_luan DateTime
+  noi_dung       String      @db.Text
   nguoi_dung     nguoi_dung? @relation(fields: [nguoi_dung_id], references: [nguoi_dung_id], onDelete: SetNull, onUpdate: Restrict, map: "binh_luan_ibfk_1")
   hinh_anh       hinh_anh    @relation(fields: [hinh_id], references: [hinh_id], onDelete: Cascade, onUpdate: Restrict, map: "binh_luan_ibfk_2")
 

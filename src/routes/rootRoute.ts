@@ -9,6 +9,9 @@ import tokenController from '../middlewares/basicToken';
 
 // // import local routes
 import imagesRoute from './imagesRoute';
+import usersRoute from './usersRoute';
+import commentsRoute from './commentsRoute';
+
 // const restaurantRoute = require('./restaurantRoute');
 
 // rootRoute.post('/new-token', (req: Request, res: Response) => {
@@ -22,6 +25,7 @@ import imagesRoute from './imagesRoute';
 // });
 
 rootRoute.use('/images', imagesRoute);
-// rootRoute.use('/restaurant', restaurantRoute);
+rootRoute.use('/users', usersRoute);
+rootRoute.use('/comments', commentsRoute);
 
 export default rootRoute;

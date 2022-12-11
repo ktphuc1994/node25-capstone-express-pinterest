@@ -8,37 +8,90 @@ const prisma = new PrismaClient();
 import responseCode from '../config/responses';
 
 const imagesController = {
+  // LẤY danh sách ảnh
   getImages: async (_: Request, res: Response) => {
     try {
-      const imageArr = await prisma.hinh_anh.findMany();
-      responseCode.success(res, imageArr, 'Lấy danh sách ảnh thành công');
+      const imagesData = await prisma.hinh_anh.findMany();
+      responseCode.success(res, imagesData, 'Lấy danh sách ảnh thành công');
     } catch (err) {
       responseCode.error(res, 'Lỗi Backend');
     }
   },
+
+  // LẤY danh sách ảnh theo tên
   getImagesByName: async (req: Request, res: Response) => {
     try {
       const { name } = req.params;
-      const imageArr = await prisma.hinh_anh.findMany({
+      const imagesData = await prisma.hinh_anh.findMany({
         where: { ten_hinh: { contains: `${name}` } },
       });
-      responseCode.success(res, imageArr, 'Lấy danh sách ảnh thành công');
+
+      if (imagesData.length === 0) {
+        responseCode.notFound(res, { name }, 'Không tìm thấy hình ảnh');
+      }
+
+      responseCode.success(res, imagesData, 'Lấy danh sách ảnh thành công');
     } catch (err) {
       responseCode.error(res, 'Lỗi Backend');
     }
   },
+
+  // LẤY danh sách ảnh theo ID
   getImagesById: async (req: Request, res: Response) => {
     try {
-      let params = req.params;
-      const id = Number(params.id);
-      const imageInfo = await prisma.hinh_anh.findFirst({
-        where: { hinh_id: id },
-      });
-      if (!imageInfo) {
-        responseCode.notFound(res, { id }, 'Không tìm thấy hình ảnh');
+      let { id } = req.params;
+
+      if (isNaN(Number(id))) {
+        responseCode.badRequest(res, { id }, 'id phải là số');
         return;
       }
-      responseCode.success(res, imageInfo, 'Lấy ảnh thành công');
+
+      const imageInfo = await prisma.hinh_anh.findFirst({
+        where: { hinh_id: Number(id) },
+        include: {
+          nguoi_dung: {
+            select: {
+              nguoi_dung_id: true,
+              email: true,
+              ho_ten: true,
+              tuoi: true,
+              anh_dai_dien: true,
+            },
+          },
+        },
+      });
+
+      if (!imageInfo) {
+        responseCode.notFound(
+          res,
+          { id: Number(id) },
+          'Không tìm thấy hình ảnh'
+        );
+        return;
+      }
+      responseCode.success(res, imageInfo, 'Lấy thông tin ảnh thành công');
+    } catch (err) {
+      responseCode.error(res, 'Lỗi Backend');
+    }
+  },
+
+  // LẤY thông tin đã lưu hình chưa
+  isImageSaved: async (req: Request, res: Response) => {
+    try {
+      const { id, userid } = req.params;
+
+      const savedImgData = await prisma.luu_anh.findFirst({
+        where: {
+          hinh_id: Number(id),
+          nguoi_dung_id: Number(userid),
+        },
+      });
+
+      responseCode.success(
+        res,
+        { isSaved: savedImgData ? true : false },
+        'Success'
+      );
     } catch (err) {
       responseCode.error(res, 'Lỗi Backend');
     }
