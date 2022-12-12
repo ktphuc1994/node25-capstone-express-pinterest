@@ -6,7 +6,7 @@ import jwt, { JsonWebTokenError, Secret } from 'jsonwebtoken';
 import responseCode from '../config/responses';
 
 // jwt config
-const secrectKey: Secret = process.env.SECRECT_KEY!;
+const secrectKey: Secret = process.env.SECRET_KEY!;
 
 const tokenController = {
   create: (nguoi_dung_id: string, ho_ten: string): string => {
@@ -18,7 +18,7 @@ const tokenController = {
   },
   check: (token: string): { checkData: boolean; message: string } => {
     try {
-      const checkToken = jwt.verify(token, secrectKey);
+      jwt.verify(token, secrectKey);
       return { checkData: true, message: '' };
     } catch (err) {
       if (err instanceof JsonWebTokenError) {

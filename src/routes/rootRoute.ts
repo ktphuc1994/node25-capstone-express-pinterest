@@ -7,10 +7,13 @@ import responseCode from '../config/responses';
 // import middlewares
 import tokenController from '../middlewares/basicToken';
 
-// // import local routes
+// import local routes
 import imagesRoute from './imagesRoute';
 import usersRoute from './usersRoute';
 import commentsRoute from './commentsRoute';
+
+// import controller
+import utilsController from '../controllers/utilsController';
 
 // const restaurantRoute = require('./restaurantRoute');
 
@@ -24,6 +27,7 @@ import commentsRoute from './commentsRoute';
 //   }
 // });
 
+rootRoute.get('/readme', utilsController.readme);
 rootRoute.use('/images', imagesRoute);
 rootRoute.use('/users', usersRoute);
 rootRoute.use('/comments', commentsRoute);

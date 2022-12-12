@@ -25,7 +25,7 @@ import { PrismaModelName } from '../types';
 const checkReqData = (res: Response, ...reqData: any[]) => {
   for (const data of reqData) {
     if (data === undefined) {
-      responseCode.failSyntax(res, '', 'Missing or incorrect request data');
+      responseCode.badRequest(res, '', 'Missing or incorrect request data');
       return false;
     }
   }

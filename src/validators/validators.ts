@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { InterfaceComment, InterfaceUser } from '../types';
+import { InterfaceComment, InterfaceImage, InterfaceUser } from '../types';
 
 const validators = {
   isNumber: Joi.number().required(),
@@ -16,6 +16,12 @@ const validators = {
     tuoi: Joi.number().required(),
     mat_khau: Joi.string().required(),
     anh_dai_dien: Joi.string(),
+  }),
+  image: Joi.object<InterfaceImage>({
+    ten_hinh: Joi.string().min(1).required(),
+    duong_dan: Joi.string().min(1).required(),
+    mo_ta: Joi.string().min(1).required(),
+    nguoi_dung_id: Joi.number().required(),
   }),
 };
 

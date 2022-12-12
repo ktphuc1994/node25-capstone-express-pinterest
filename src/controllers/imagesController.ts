@@ -108,6 +108,41 @@ const imagesController = {
       catchError(err, req, res);
     }
   },
+
+  // UPLOAD ảnh
+  uploadImage: async (req: Request, res: Response) => {
+    try {
+      if (!req.file) {
+        responseCode.badRequest(
+          res,
+          '',
+          'Định dạng file không hợp lệ. Phải là png/jpg/jpeg/webp'
+        );
+        return;
+      }
+      responseCode.success(
+        res,
+        { filename: req.file.filename },
+        'Upload file thành công'
+      );
+    } catch (err) {
+      catchError(err, req, res);
+    }
+  },
+
+  // POST thêm một ảnh của user với thông tin:
+  createImage: async (req: Request, res: Response) => {
+    try {
+      const newImage = await validators.image.validateAsync(req.body, {
+        abortEarly: true,
+      });
+
+      const result = await prisma.hinh_anh.create({ data: newImage });
+      responseCode.created(res, result, 'Tạo hình ảnh thành công');
+    } catch (err) {
+      catchError(err, req, res);
+    }
+  },
 };
 
 export default imagesController;

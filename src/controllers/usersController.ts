@@ -6,6 +6,8 @@ const prisma = new PrismaClient();
 
 // import local config
 import responseCode, { catchError } from '../config/responses';
+
+// import validator
 import validators from '../validators/validators';
 
 const usersController = {
@@ -103,6 +105,7 @@ const usersController = {
   updateUser: async (req: Request, res: Response) => {
     try {
       const userInfo = await validators.user.validateAsync(req.body);
+
       const result = await prisma.nguoi_dung.update({
         where: { nguoi_dung_id: userInfo.nguoi_dung_id },
         data: userInfo,
