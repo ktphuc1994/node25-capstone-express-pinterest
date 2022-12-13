@@ -4,6 +4,14 @@ const prisma = new PrismaClient();
 
 const userData: Prisma.nguoi_dungCreateInput[] = [
   {
+    email: 'ayaka@hoyoverse.com',
+    mat_khau: 'AyakaOfKamisato2893',
+    ho_ten: 'Kamisato Ayaka',
+    tuoi: 16,
+    anh_dai_dien:
+      'https://cdn.sforum.vn/sforum/wp-content/uploads/2022/04/1158044.png',
+  },
+  {
     email: 'alice@prisma.io',
     mat_khau: 'alice123',
     ho_ten: 'Alice n Wonderland',

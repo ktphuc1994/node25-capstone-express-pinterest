@@ -4,9 +4,6 @@ import 'dotenv/config';
 // import jwt token
 import jwt, { JsonWebTokenError, Secret } from 'jsonwebtoken';
 
-// import local interface
-import { InterfaceUser } from '../types';
-
 // import local config
 import responseCode from '../config/responses';
 
@@ -17,7 +14,7 @@ const tokenController = {
   create: (data: any): string => {
     const token = jwt.sign(data, secrectKey, {
       algorithm: 'HS256',
-      expiresIn: '2d',
+      expiresIn: '30d',
     });
     return token;
   },
@@ -29,18 +26,17 @@ const tokenController = {
       if (err instanceof JsonWebTokenError) {
         return { checkData: false, message: err.message };
       }
-      return { checkData: false, message: 'Unknown' };
+      return {
+        checkData: false,
+        message: 'Failed at Token Verification',
+      };
     }
   },
   verify: (req: Request, res: Response, next: NextFunction): void => {
     try {
       const authtoken = req.header('authtoken');
       if (!authtoken) {
-        responseCode.unauthorized(
-          res,
-          'Failed. Unauthorized',
-          'Token không hợp lệ'
-        );
+        responseCode.unauthorized(res, 'Unauthorized', 'Token không hợp lệ');
         return;
       }
       const verifyToken = tokenController.check(authtoken);

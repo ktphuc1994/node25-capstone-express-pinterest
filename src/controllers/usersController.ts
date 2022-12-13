@@ -47,23 +47,24 @@ const usersController = {
         stripUnknown: true,
       });
 
-      const result = await prisma.nguoi_dung.findFirst({
+      const user = await prisma.nguoi_dung.findFirst({
         where: {
           email: loginInfo.email,
           mat_khau: loginInfo.mat_khau,
         },
       });
 
-      if (!result) {
+      if (!user) {
         responseCode.unauthorized(
           res,
           'Login failed',
           'Email hoặc mật khẩu không đúng'
         );
+        return;
       }
 
-      const token = tokenController.create(result);
-      responseCode.success(res, { token }, 'Đăng nhập thành công');
+      const authtoken = tokenController.create(user);
+      responseCode.created(res, { authtoken }, 'Đăng nhập thành công');
     } catch (err) {
       catchError(err, req, res);
     }

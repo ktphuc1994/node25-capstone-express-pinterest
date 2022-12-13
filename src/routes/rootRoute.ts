@@ -13,21 +13,11 @@ import commentsRoute from './commentsRoute';
 import utilsController from '../controllers/utilsController';
 import usersController from '../controllers/usersController';
 
-// rootRoute.post('/new-token', (req: Request, res: Response) => {
-//   try {
-//     const data = req.body;
-//     const newToken = tokenController.create(data);
-//     responseCode.created(res, newToken, 'Token created');
-//   } catch (err) {
-//     responseCode.error(res, 'Backend error');
-//   }
-// });
-
 rootRoute.get('/readme', utilsController.readme);
 rootRoute.post('/signup', usersController.signup);
 rootRoute.post('/login', usersController.login);
-rootRoute.use('/images', imagesRoute);
-rootRoute.use('/users', usersRoute);
-rootRoute.use('/comments', commentsRoute);
+rootRoute.use('/images', tokenController.verify, imagesRoute);
+rootRoute.use('/users', tokenController.verify, usersRoute);
+rootRoute.use('/comments', tokenController.verify, commentsRoute);
 
 export default rootRoute;
