@@ -16,7 +16,7 @@ model nguoi_dung {
   mat_khau      String      @db.VarChar(255)
   ho_ten        String      @db.VarChar(255)
   tuoi          Int
-  anh_dai_dien  String      @db.Text
+  anh_dai_dien  String?     @db.Text
   hinh_anh      hinh_anh[]
   luu_anh       luu_anh[]
   binh_luan     binh_luan[]

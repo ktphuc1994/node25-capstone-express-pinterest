@@ -16,7 +16,7 @@ const commentsController = {
     try {
       const id = await validators.isNumber.validateAsync(
         Number(req.params.id),
-        { messages: { 'number.base': 'hinh_id phải là dạng số' } }
+        { messages: { 'number.base': 'hinh_id phải là kiểu số' } }
       );
 
       const commentsData = await prisma.binh_luan.findMany({
@@ -39,6 +39,7 @@ const commentsController = {
       const commentInfo = await validators.comment.validateAsync(req.body, {
         abortEarly: true,
         convert: false,
+        stripUnknown: true,
       });
       const postComment = await prisma.binh_luan.create({ data: commentInfo });
       responseCode.created(res, postComment, 'Đăng bình luận thành công');

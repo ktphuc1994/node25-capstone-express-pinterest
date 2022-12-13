@@ -10,7 +10,65 @@ import responseCode, { catchError } from '../config/responses';
 // import validator
 import validators from '../validators/validators';
 
+// import controller
+import tokenController from '../middlewares/basicToken';
+
 const usersController = {
+  // SIGN UP Đăng ký user mới
+  signup: async (req: Request, res: Response) => {
+    try {
+      const newUser = await validators
+        .createUser()
+        .validateAsync(req.body, { stripUnknown: true });
+
+      const checkEmail = await prisma.nguoi_dung.findFirst({
+        where: { email: newUser.email },
+      });
+      if (checkEmail) {
+        responseCode.conflict(
+          res,
+          { email: newUser.email },
+          'Email đã tồn tại'
+        );
+        return;
+      }
+
+      const result = await prisma.nguoi_dung.create({ data: newUser });
+      responseCode.created(res, result, 'Đăng ký thành công');
+    } catch (err) {
+      catchError(err, req, res);
+    }
+  },
+
+  // ĐĂNG NHẬP
+  login: async (req: Request, res: Response) => {
+    try {
+      const loginInfo = await validators.login.validateAsync(req.body, {
+        stripUnknown: true,
+      });
+
+      const result = await prisma.nguoi_dung.findFirst({
+        where: {
+          email: loginInfo.email,
+          mat_khau: loginInfo.mat_khau,
+        },
+      });
+
+      if (!result) {
+        responseCode.unauthorized(
+          res,
+          'Login failed',
+          'Email hoặc mật khẩu không đúng'
+        );
+      }
+
+      const token = tokenController.create(result);
+      responseCode.success(res, { token }, 'Đăng nhập thành công');
+    } catch (err) {
+      catchError(err, req, res);
+    }
+  },
+
   // LẤY thông tin toàn bộ user
   getUser: async (_: Request, res: Response) => {
     try {
@@ -104,11 +162,20 @@ const usersController = {
   // CẬP NHẬT thông tin User
   updateUser: async (req: Request, res: Response) => {
     try {
-      const userInfo = await validators.user.validateAsync(req.body);
+      const userInfo = await validators.user.validateAsync(req.body, {
+        stripUnknown: true,
+      });
 
       const result = await prisma.nguoi_dung.update({
         where: { nguoi_dung_id: userInfo.nguoi_dung_id },
         data: userInfo,
+        select: {
+          nguoi_dung_id: true,
+          email: true,
+          ho_ten: true,
+          tuoi: true,
+          anh_dai_dien: true,
+        },
       });
 
       responseCode.success(res, result, 'Cập nhật user thành công');

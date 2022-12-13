@@ -1,6 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
 import 'dotenv/config';
+
+// import jwt token
 import jwt, { JsonWebTokenError, Secret } from 'jsonwebtoken';
+
+// import local interface
+import { InterfaceUser } from '../types';
 
 // import local config
 import responseCode from '../config/responses';
@@ -9,8 +14,8 @@ import responseCode from '../config/responses';
 const secrectKey: Secret = process.env.SECRET_KEY!;
 
 const tokenController = {
-  create: (nguoi_dung_id: string, ho_ten: string): string => {
-    const token = jwt.sign({ nguoi_dung_id, ho_ten }, secrectKey, {
+  create: (data: any): string => {
+    const token = jwt.sign(data, secrectKey, {
       algorithm: 'HS256',
       expiresIn: '2d',
     });
@@ -31,7 +36,11 @@ const tokenController = {
     try {
       const authtoken = req.header('authtoken');
       if (!authtoken) {
-        responseCode.unauthorized(res, 'Token không hợp lệ', 'Token not found');
+        responseCode.unauthorized(
+          res,
+          'Failed. Unauthorized',
+          'Token không hợp lệ'
+        );
         return;
       }
       const verifyToken = tokenController.check(authtoken);

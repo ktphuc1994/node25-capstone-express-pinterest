@@ -1,8 +1,5 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 const rootRoute = express.Router();
-
-// import local config
-import responseCode from '../config/responses';
 
 // import middlewares
 import tokenController from '../middlewares/basicToken';
@@ -14,8 +11,7 @@ import commentsRoute from './commentsRoute';
 
 // import controller
 import utilsController from '../controllers/utilsController';
-
-// const restaurantRoute = require('./restaurantRoute');
+import usersController from '../controllers/usersController';
 
 // rootRoute.post('/new-token', (req: Request, res: Response) => {
 //   try {
@@ -28,6 +24,8 @@ import utilsController from '../controllers/utilsController';
 // });
 
 rootRoute.get('/readme', utilsController.readme);
+rootRoute.post('/signup', usersController.signup);
+rootRoute.post('/login', usersController.login);
 rootRoute.use('/images', imagesRoute);
 rootRoute.use('/users', usersRoute);
 rootRoute.use('/comments', commentsRoute);

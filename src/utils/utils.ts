@@ -1,4 +1,4 @@
-import { Response } from 'express';
+import { Request, Response } from 'express';
 
 // import prisma
 import { PrismaClient, Prisma } from '@prisma/client';
@@ -32,4 +32,9 @@ const checkReqData = (res: Response, ...reqData: any[]) => {
   return true;
 };
 
-export { checkReqData };
+const getFileUrl = (req: Request, dir: string, filename: string) => {
+  const url = req.protocol + '://' + req.get('host') + dir + '/' + filename;
+  return url;
+};
+
+export { checkReqData, getFileUrl };

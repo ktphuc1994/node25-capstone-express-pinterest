@@ -8,8 +8,6 @@ usersRoute.get('/', usersController.getUser);
 usersRoute.get('/:id', usersController.getUserById);
 usersRoute.get('/:id/images', usersController.getOwnedImages);
 usersRoute.get('/:id/saved-images', usersController.getSavedImages);
-usersRoute.post('/signup');
-usersRoute.post('/login');
-usersRoute.post('/update', usersController.updateUser);
+usersRoute.put('/update', usersController.updateUser);
 
 export default usersRoute;

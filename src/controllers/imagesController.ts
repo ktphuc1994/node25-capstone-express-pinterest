@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import 'dotenv/config';
 
 // import prisma
 import { PrismaClient } from '@prisma/client';
@@ -9,6 +10,9 @@ import responseCode, { catchError } from '../config/responses';
 
 // import validator
 import validators from '../validators/validators';
+
+// import local utils
+import { getFileUrl } from '../utils/utils';
 
 const imagesController = {
   // LẤY danh sách ảnh
@@ -26,7 +30,7 @@ const imagesController = {
     try {
       const { name } = req.params;
       const imagesData = await prisma.hinh_anh.findMany({
-        where: { ten_hinh: { contains: `${name}` } },
+        where: { ten_hinh: { contains: name } },
       });
 
       if (imagesData.length === 0) {
@@ -39,12 +43,12 @@ const imagesController = {
     }
   },
 
-  // LẤY danh sách ảnh theo ID
+  // LẤY thông tin ảnh theo ID
   getImagesById: async (req: Request, res: Response) => {
     try {
       const id = await validators.isNumber.validateAsync(
         Number(req.params.id),
-        { messages: { 'number.base': 'hinh_id phải là dạng số' } }
+        { messages: { 'number.base': 'hinh_id phải là kiểu số' } }
       );
 
       const imageInfo = await prisma.hinh_anh.findFirst({
@@ -99,7 +103,7 @@ const imagesController = {
     try {
       const id = await validators.isNumber.validateAsync(
         Number(req.params.id),
-        { messages: { 'number.base': 'hinh_id phải là dạng số' } }
+        { messages: { 'number.base': 'hinh_id phải là kiểu số' } }
       );
 
       const result = await prisma.hinh_anh.delete({ where: { hinh_id: id } });
@@ -122,7 +126,9 @@ const imagesController = {
       }
       responseCode.success(
         res,
-        { filename: req.file.filename },
+        {
+          imageURL: getFileUrl(req, process.env.IMAGE_URL!, req.file.filename),
+        },
         'Upload file thành công'
       );
     } catch (err) {
@@ -135,6 +141,7 @@ const imagesController = {
     try {
       const newImage = await validators.image.validateAsync(req.body, {
         abortEarly: true,
+        stripUnknown: true,
       });
 
       const result = await prisma.hinh_anh.create({ data: newImage });
