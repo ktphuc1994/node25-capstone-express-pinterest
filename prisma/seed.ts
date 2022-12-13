@@ -1,11 +1,19 @@
 import { PrismaClient, Prisma } from '@prisma/client';
-
 const prisma = new PrismaClient();
+
+// import bcrypt
+import bcrypt from 'bcrypt';
+
+// import local config
+import 'dotenv/config';
 
 const userData: Prisma.nguoi_dungCreateInput[] = [
   {
     email: 'ayaka@hoyoverse.com',
-    mat_khau: 'AyakaOfKamisato2893',
+    mat_khau: bcrypt.hashSync(
+      'AyakaOfKamisato2809',
+      Number(process.env.BCRYPT_SALT)
+    ),
     ho_ten: 'Kamisato Ayaka',
     tuoi: 16,
     anh_dai_dien:
@@ -13,7 +21,7 @@ const userData: Prisma.nguoi_dungCreateInput[] = [
   },
   {
     email: 'alice@prisma.io',
-    mat_khau: 'alice123',
+    mat_khau: bcrypt.hashSync('alice123', Number(process.env.BCRYPT_SALT)),
     ho_ten: 'Alice n Wonderland',
     tuoi: 16,
     anh_dai_dien:
@@ -21,7 +29,7 @@ const userData: Prisma.nguoi_dungCreateInput[] = [
   },
   {
     email: 'bob@prisma.io',
-    mat_khau: 'bob123',
+    mat_khau: bcrypt.hashSync('bob123', Number(process.env.BCRYPT_SALT)),
     ho_ten: 'Bob',
     tuoi: 17,
     anh_dai_dien:
@@ -29,7 +37,7 @@ const userData: Prisma.nguoi_dungCreateInput[] = [
   },
   {
     email: 'tom@gmail.com',
-    mat_khau: 'tom123',
+    mat_khau: bcrypt.hashSync('tom123', Number(process.env.BCRYPT_SALT)),
     ho_ten: 'Tom',
     tuoi: 5,
     anh_dai_dien:
@@ -37,7 +45,7 @@ const userData: Prisma.nguoi_dungCreateInput[] = [
   },
   {
     email: 'jerry@gmail.com',
-    mat_khau: 'jerry123',
+    mat_khau: bcrypt.hashSync('jerry123', Number(process.env.BCRYPT_SALT)),
     ho_ten: 'Jerry',
     tuoi: 5,
     anh_dai_dien:
@@ -45,7 +53,7 @@ const userData: Prisma.nguoi_dungCreateInput[] = [
   },
   {
     email: 'oggy@prisma.io',
-    mat_khau: 'oggy123',
+    mat_khau: bcrypt.hashSync('oggy123', Number(process.env.BCRYPT_SALT)),
     ho_ten: 'Oggy',
     tuoi: 4,
     anh_dai_dien:
@@ -53,7 +61,7 @@ const userData: Prisma.nguoi_dungCreateInput[] = [
   },
   {
     email: 'joey@gmail.com',
-    mat_khau: 'joey123',
+    mat_khau: bcrypt.hashSync('joey123', Number(process.env.BCRYPT_SALT)),
     ho_ten: 'Joey',
     tuoi: 2,
     anh_dai_dien:
@@ -61,7 +69,7 @@ const userData: Prisma.nguoi_dungCreateInput[] = [
   },
   {
     email: 'marky@prisma.io',
-    mat_khau: 'marky123',
+    mat_khau: bcrypt.hashSync('marky123', Number(process.env.BCRYPT_SALT)),
     ho_ten: 'Marky',
     tuoi: 2,
     anh_dai_dien:
@@ -69,7 +77,7 @@ const userData: Prisma.nguoi_dungCreateInput[] = [
   },
   {
     email: 'deedee@gmail.com',
-    mat_khau: 'deedee123',
+    mat_khau: bcrypt.hashSync('deedee123', Number(process.env.BCRYPT_SALT)),
     ho_ten: 'Dee Dee',
     tuoi: 2,
     anh_dai_dien:
@@ -77,7 +85,7 @@ const userData: Prisma.nguoi_dungCreateInput[] = [
   },
   {
     email: 'courage@gmail.com',
-    mat_khau: 'courage123',
+    mat_khau: bcrypt.hashSync('courage123', Number(process.env.BCRYPT_SALT)),
     ho_ten: 'Courage',
     tuoi: 5,
     anh_dai_dien:
@@ -85,7 +93,7 @@ const userData: Prisma.nguoi_dungCreateInput[] = [
   },
   {
     email: 'blossom@gmail.com',
-    mat_khau: 'blossom123',
+    mat_khau: bcrypt.hashSync('blossom123', Number(process.env.BCRYPT_SALT)),
     ho_ten: 'Blossom',
     tuoi: 10,
     anh_dai_dien:

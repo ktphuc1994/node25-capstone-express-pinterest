@@ -4,7 +4,11 @@ import { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
+// import bcrypt
+import bcrypt from 'bcrypt';
+
 // import local config
+import 'dotenv/config';
 import responseCode, { catchError } from '../config/responses';
 
 // import validator
@@ -33,7 +37,12 @@ const usersController = {
         return;
       }
 
+      newUser.mat_khau = bcrypt.hashSync(
+        newUser.mat_khau,
+        Number(process.env.BCRYPT_SALT)
+      );
       const result = await prisma.nguoi_dung.create({ data: newUser });
+
       responseCode.created(res, result, 'Đăng ký thành công');
     } catch (err) {
       catchError(err, req, res);
@@ -50,11 +59,19 @@ const usersController = {
       const user = await prisma.nguoi_dung.findFirst({
         where: {
           email: loginInfo.email,
-          mat_khau: loginInfo.mat_khau,
         },
       });
-
       if (!user) {
+        responseCode.unauthorized(
+          res,
+          'Login failed',
+          'Email hoặc mật khẩu không đúng'
+        );
+        return;
+      }
+
+      const checkPass = bcrypt.compareSync(loginInfo.mat_khau, user.mat_khau);
+      if (!checkPass) {
         responseCode.unauthorized(
           res,
           'Login failed',
@@ -167,6 +184,10 @@ const usersController = {
         stripUnknown: true,
       });
 
+      userInfo.mat_khau = bcrypt.hashSync(
+        userInfo.mat_khau,
+        Number(process.env.BCRYPT_SALT)
+      );
       const result = await prisma.nguoi_dung.update({
         where: { nguoi_dung_id: userInfo.nguoi_dung_id },
         data: userInfo,
