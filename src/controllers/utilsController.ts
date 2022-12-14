@@ -13,6 +13,8 @@ const utilsController = {
       responseCode.success(
         res,
         {
+          dbPort: 3306,
+          backendPort: 8080,
           optional: 'drop table db_pinterest if there is no data there',
           first: 'yarn prisma db push',
           second: 'yarn prisma generate',

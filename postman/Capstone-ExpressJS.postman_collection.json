@@ -30,7 +30,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"ho_ten\": \"Kamisato Ayaka\",\r\n    \"email\": \"ayaka@hoyoverse.com\",\r\n    \"tuoi\": 16,\r\n    \"mat_khau\": \"AyakaofKamisato\",\r\n    \"anh_dai_dien\": \"https://cdn.sforum.vn/sforum/wp-content/uploads/2022/04/1158044.png\"\r\n}",
+					"raw": "{\r\n    \"ho_ten\": \"Koyomi Araragi\",\r\n    \"email\": \"koyomiararagi@gmail.com\",\r\n    \"tuoi\": 16,\r\n    \"mat_khau\": \"KoyomiBook@1209\",\r\n    \"anh_dai_dien\": \"https://i.imgur.com/r3SBcv5.png\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -56,7 +56,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"ayaka@hoyoverse.com\",\r\n    \"mat_khau\": \"AyakaofKamisato\"\r\n}",
+					"raw": "{\r\n    \"email\": \"ayaka@hoyoverse.com\",\r\n    \"mat_khau\": \"AyakaOfKamisato#2809\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -441,7 +441,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"nguoi_dung_id\": 2,\r\n    \"ho_ten\": \"Angel\",\r\n    \"email\": \"angel@heaven.com\",\r\n    \"tuoi\": 1000,\r\n    \"mat_khau\": \"isAngelReal\",\r\n    \"anh_dai_dien\": \"https://pbs.twimg.com/media/E4K6Q7-WQAQxvXs.jpg\"\r\n}",
+					"raw": "{\r\n    \"nguoi_dung_id\": 2,\r\n    \"ho_ten\": \"Angel\",\r\n    \"email\": \"angel@heaven.com\",\r\n    \"tuoi\": 1000,\r\n    \"mat_khau\": \"isAngel#Real3\",\r\n    \"anh_dai_dien\": \"https://pbs.twimg.com/media/E4K6Q7-WQAQxvXs.jpg\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
