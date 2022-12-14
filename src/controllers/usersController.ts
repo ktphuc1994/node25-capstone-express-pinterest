@@ -43,7 +43,7 @@ const usersController = {
       );
       const result = await prisma.nguoi_dung.create({ data: newUser });
 
-      responseCode.created(res, result, 'Đăng ký thành công');
+      responseCode.created(res, 'Success', 'Đăng ký thành công');
     } catch (err) {
       catchError(err, req, res);
     }
@@ -180,7 +180,7 @@ const usersController = {
   // CẬP NHẬT thông tin User
   updateUser: async (req: Request, res: Response) => {
     try {
-      const userInfo = await validators.user.validateAsync(req.body, {
+      const userInfo = await validators.user().validateAsync(req.body, {
         stripUnknown: true,
       });
 
