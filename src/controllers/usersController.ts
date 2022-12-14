@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import 'dotenv/config';
 
 // import prisma
 import { PrismaClient } from '@prisma/client';
@@ -7,8 +8,12 @@ const prisma = new PrismaClient();
 // import bcrypt
 import bcrypt from 'bcrypt';
 
+// jwt config
+import { Secret } from 'jsonwebtoken';
+const secretCookie: Secret = process.env.SECRET_COOKIE!;
+const secretKey: Secret = process.env.SECRET_KEY!;
+
 // import local config
-import 'dotenv/config';
 import responseCode, { catchError } from '../config/responses';
 
 // import validator
@@ -16,6 +21,7 @@ import validators from '../validators/validators';
 
 // import controller
 import tokenController from '../middlewares/basicToken';
+import generalConstant from '../constants/generalConstants';
 
 const usersController = {
   // SIGN UP Đăng ký user mới
@@ -41,7 +47,7 @@ const usersController = {
         newUser.mat_khau,
         Number(process.env.BCRYPT_SALT)
       );
-      const result = await prisma.nguoi_dung.create({ data: newUser });
+      await prisma.nguoi_dung.create({ data: newUser });
 
       responseCode.created(res, 'Success', 'Đăng ký thành công');
     } catch (err) {
@@ -80,8 +86,18 @@ const usersController = {
         return;
       }
 
-      const authtoken = tokenController.create(user);
-      responseCode.created(res, { authtoken }, 'Đăng nhập thành công');
+      const authtoken = tokenController.create(user, secretKey);
+      const cookietoken = tokenController.create(user, secretCookie);
+
+      res
+        .status(200)
+        .cookie(generalConstant.SECRET_COOKIE, cookietoken, {
+          secure: true,
+          httpOnly: true,
+          sameSite: 'none',
+          maxAge: 2592000000,
+        })
+        .json({ message: 'Đăng nhập thành công', content: { authtoken } });
     } catch (err) {
       catchError(err, req, res);
     }

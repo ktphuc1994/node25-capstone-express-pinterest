@@ -8,19 +8,23 @@ import jwt, { JsonWebTokenError, Secret } from 'jsonwebtoken';
 import responseCode from '../config/responses';
 
 // jwt config
-const secrectKey: Secret = process.env.SECRET_KEY!;
+const secretCookie: Secret = process.env.SECRET_COOKIE!;
+const secretKey: Secret = process.env.SECRET_KEY!;
 
 const tokenController = {
-  create: (data: any): string => {
-    const token = jwt.sign(data, secrectKey, {
+  create: (data: any, secret: string): string => {
+    const token = jwt.sign(data, secret, {
       algorithm: 'HS256',
       expiresIn: '30d',
     });
     return token;
   },
-  check: (token: string): { checkData: boolean; message: string } => {
+  check: (
+    token: string,
+    secret: string
+  ): { checkData: boolean; message: string } => {
     try {
-      jwt.verify(token, secrectKey);
+      jwt.verify(token, secret);
       return { checkData: true, message: '' };
     } catch (err) {
       if (err instanceof JsonWebTokenError) {
@@ -35,16 +39,18 @@ const tokenController = {
   verify: (req: Request, res: Response, next: NextFunction): void => {
     try {
       const authtoken = req.header('authtoken');
-      if (!authtoken) {
+      const cookieToken = req.cookies;
+      if (!authtoken || !req.cookies.cookieToken) {
         responseCode.unauthorized(res, 'Unauthorized', 'Token không hợp lệ');
         return;
       }
-      const verifyToken = tokenController.check(authtoken);
-      if (verifyToken.checkData) {
+      const verifyToken = tokenController.check(authtoken, secretKey);
+      const verifyCookie = tokenController.check(cookieToken, secretCookie);
+      if (verifyToken.checkData && verifyCookie.checkData) {
         next();
         return;
       }
-      responseCode.unauthorized(res, 'Token không hợp lệ', verifyToken.message);
+      responseCode.unauthorized(res, 'Unauthorized', 'Token không hợp lệ');
     } catch (err) {
       responseCode.error(res, 'Lỗi Backend');
     }
