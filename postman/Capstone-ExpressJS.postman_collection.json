@@ -24,32 +24,6 @@
 			"response": []
 		},
 		{
-			"name": "Sign Up (CREATE User)",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"ho_ten\": \"Koyomi Araragi\",\r\n    \"email\": \"koyomiararagi@gmail.com\",\r\n    \"tuoi\": 16,\r\n    \"mat_khau\": \"KoyomiBook@1209\",\r\n    \"anh_dai_dien\": \"https://i.imgur.com/r3SBcv5.png\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{domain}}/signup",
-					"host": [
-						"{{domain}}"
-					],
-					"path": [
-						"signup"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Login",
 			"request": {
 				"method": "POST",
@@ -70,6 +44,49 @@
 					],
 					"path": [
 						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}/logout",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sign Up (CREATE User)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ho_ten\": \"Koyomi Araragi\",\r\n    \"email\": \"koyomiararagi@gmail.com\",\r\n    \"tuoi\": 16,\r\n    \"mat_khau\": \"KoyomiBook@1209\",\r\n    \"anh_dai_dien\": \"https://i.imgur.com/r3SBcv5.png\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}/signup",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"signup"
 					]
 				}
 			},
@@ -110,13 +127,13 @@
 					}
 				],
 				"url": {
-					"raw": "{{domain}}/images/4",
+					"raw": "{{domain}}/images/9",
 					"host": [
 						"{{domain}}"
 					],
 					"path": [
 						"images",
-						"4"
+						"9"
 					]
 				}
 			},
@@ -290,13 +307,13 @@
 					}
 				],
 				"url": {
-					"raw": "{{domain}}/users/5/images",
+					"raw": "{{domain}}/users/3/images",
 					"host": [
 						"{{domain}}"
 					],
 					"path": [
 						"users",
-						"5",
+						"3",
 						"images"
 					]
 				}
