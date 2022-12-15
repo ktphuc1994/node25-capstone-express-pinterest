@@ -33,10 +33,6 @@ const imagesController = {
         where: { ten_hinh: { contains: name } },
       });
 
-      if (imagesData.length === 0) {
-        responseCode.notFound(res, { name }, 'Không tìm thấy hình ảnh');
-      }
-
       responseCode.success(res, imagesData, 'Lấy danh sách ảnh thành công');
     } catch (err) {
       responseCode.error(res, 'Lỗi Backend');
