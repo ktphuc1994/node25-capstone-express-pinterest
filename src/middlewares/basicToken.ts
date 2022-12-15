@@ -39,17 +39,19 @@ const tokenController = {
   verify: (req: Request, res: Response, next: NextFunction): void => {
     try {
       const authtoken = req.header('authtoken');
-      const cookieToken = req.cookies;
-      if (!authtoken || !req.cookies.cookieToken) {
+      const cookieToken = req.cookies.cookie_token;
+      if (!authtoken || !cookieToken) {
         responseCode.unauthorized(res, 'Unauthorized', 'Token không hợp lệ');
         return;
       }
+
       const verifyToken = tokenController.check(authtoken, secretKey);
       const verifyCookie = tokenController.check(cookieToken, secretCookie);
       if (verifyToken.checkData && verifyCookie.checkData) {
         next();
         return;
       }
+
       responseCode.unauthorized(res, 'Unauthorized', 'Token không hợp lệ');
     } catch (err) {
       responseCode.error(res, 'Lỗi Backend');

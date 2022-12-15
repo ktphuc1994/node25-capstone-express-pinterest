@@ -6,21 +6,38 @@ const prisma = new PrismaClient();
 
 // import local config
 import responseCode from '../config/responses';
-import { PrismaModelName } from '../types';
 
-// const checkDataExist = async (
-//   tableName: Prisma.ModelName,
-//   idKey: string,
-//   idValue: number
-// ) => {
-//   const allTableName = Object.keys(Prisma.ModelName);
+const checkDataExist = async (
+  tableName: Prisma.ModelName,
+  idKey: string,
+  idValue: number
+) => {
+  let isDataExist: any;
 
-//   const isDataExist = await prisma[tableName].findFirst({
-//     where: { [idKey]: idValue },
-//   });
-//   if (isDataExist) return true;
-//   return false;
-// };
+  if ((tableName = 'nguoi_dung')) {
+    isDataExist = await prisma[tableName].findFirst({
+      where: { [idKey]: idValue },
+    });
+  }
+  if ((tableName = 'hinh_anh')) {
+    isDataExist = await prisma[tableName].findFirst({
+      where: { [idKey]: idValue },
+    });
+  }
+  if ((tableName = 'binh_luan')) {
+    isDataExist = await prisma[tableName].findFirst({
+      where: { [idKey]: idValue },
+    });
+  }
+  if ((tableName = 'luu_anh')) {
+    isDataExist = await prisma[tableName].findFirst({
+      where: { [idKey]: idValue },
+    });
+  }
+
+  if (isDataExist) return true;
+  return false;
+};
 
 const checkReqData = (res: Response, ...reqData: any[]) => {
   for (const data of reqData) {

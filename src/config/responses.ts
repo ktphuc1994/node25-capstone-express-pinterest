@@ -56,7 +56,7 @@ export const catchError = (err: unknown, req: Request, res: Response) => {
   if (err instanceof PrismaClientKnownRequestError) {
     responseCode.badRequest(
       res,
-      req.body,
+      err.meta ? err.meta : req.body,
       'Bad Request. Please check the request data.'
     );
     return;

@@ -92,7 +92,7 @@ const usersController = {
       res
         .status(200)
         .cookie(generalConstant.SECRET_COOKIE, cookietoken, {
-          secure: true,
+          // secure: true,
           httpOnly: true,
           sameSite: 'none',
           maxAge: 2592000000,
@@ -100,6 +100,21 @@ const usersController = {
         .json({ message: 'Đăng nhập thành công', content: { authtoken } });
     } catch (err) {
       catchError(err, req, res);
+    }
+  },
+
+  //ĐĂNG XUẤT
+  logout: (req: Request, res: Response) => {
+    try {
+      res
+        .status(200)
+        .clearCookie(generalConstant.SECRET_COOKIE)
+        .json({
+          message: 'Đăng xuất thành công',
+          content: { status: 'Logged Out' },
+        });
+    } catch (err) {
+      responseCode.error(res, 'Lỗi Backend');
     }
   },
 

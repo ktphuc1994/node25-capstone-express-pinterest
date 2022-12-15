@@ -19,6 +19,7 @@ const utilsController = {
           first: 'yarn prisma db push',
           second: 'yarn prisma generate',
           third: 'yarn prisma db seed',
+          fourth: 'LOGIN First',
         },
         'Cảm ơn mentor đã chấm bài'
       );

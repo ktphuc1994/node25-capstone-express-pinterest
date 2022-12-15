@@ -1,15 +1,24 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 
 export * from './comment';
 export * from './user';
 export * from './image';
 
-type IgnorePrismaBuiltins<S extends string> = string extends S
-  ? string
-  : S extends ''
-  ? S
-  : S extends `$${infer T}`
-  ? never
-  : S;
+// https://github.com/prisma/prisma/discussions/5107?sort=new
+type Model = Prisma.ModelName;
+type ModelAction =
+  | 'findUnique'
+  | 'findMany'
+  | 'findFirst'
+  | 'create'
+  | 'update'
+  | 'updateMany'
+  | 'upsert'
+  | 'delete'
+  | 'deleteMany'
+  | 'aggregate'
+  | 'count';
 
-export type PrismaModelName = IgnorePrismaBuiltins<keyof PrismaClient>;
+type GetArgumentType<M extends Model, Action extends ModelAction> = Parameters<
+  PrismaClient[M][Action]
+>[0];

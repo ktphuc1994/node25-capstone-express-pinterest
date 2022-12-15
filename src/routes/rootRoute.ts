@@ -16,6 +16,7 @@ import usersController from '../controllers/usersController';
 rootRoute.get('/readme', utilsController.readme);
 rootRoute.post('/signup', usersController.signup);
 rootRoute.post('/login', usersController.login);
+rootRoute.post('/logout', usersController.logout);
 rootRoute.use('/images', tokenController.verify, imagesRoute);
 rootRoute.use('/users', tokenController.verify, usersRoute);
 rootRoute.use('/comments', tokenController.verify, commentsRoute);
